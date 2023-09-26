@@ -1,0 +1,37 @@
+#!/usr/bin/env node
+
+const semver = require ("semver");
+const { execSync } = require("child_process");
+const { exit } = require("process");
+const inquirer = require("inquirer")
+
+try {
+  const current = execSync("git describe --tags").toString().trim();
+  const version = semver.coerce(current);
+  if (!version) {
+    console.error("Invalid current version '" + current + "'.")
+    exit();
+  }
+
+  console.log("Current version: " + version)
+
+  inquirer.prompt([
+    {
+      type: "list",
+      name: "type",
+      message: "Select a semver release type to bump:",
+      default: "patch",
+      choices: [
+        { name: "major (" + semver.inc(version, "major") + ")", value: "major", short: "major"},
+        { name: "minor (" + semver.inc(version, "minor") + ")", value: "minor", short: "minor"},
+        { name: "patch (" + semver.inc(version, "patch") + ")", value: "patch", short: "patch"},
+      ]
+    }
+  ]).then(answers => {
+    const to = semver.inc(version, answers.type);
+    execSync("git tag " + to);
+    console.log("New version: " + to);
+  })
+} catch (error) {
+  
+}

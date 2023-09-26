@@ -1,0 +1,15 @@
+{
+  "name": "gitbump",
+  "version": "0.0.1",
+  "description": "Bump version numbers in git tags, from a tiny CLI interface",
+  "main": "bump",
+  "repository": "https://github.com/doches/gitbump",
+  "author": "Trevor Fountain",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "inquirer": "^8.0.0",
+    "semver": "^7.5.4"
+  },
+  "bin": "bump"
+}
